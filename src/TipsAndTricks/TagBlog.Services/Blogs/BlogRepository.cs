@@ -1,6 +1,5 @@
 ﻿using TatBlog.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-
 using TatBlog.Data.Contexts;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Contracts;
@@ -103,10 +102,35 @@ namespace TatBlog.Services.Blogs
 
              });
             return await tagQuery.ToPagedListAsync(pagingParams, cancellationToken);
-           ;
+            
         }
 
+        public async Task<Tag> GetTagAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(slug)) return null;
 
+            return await _context.Set<Tag>()
+                .FirstOrDefaultAsync(x => x.UrlSlug == slug, cancellationToken);
+        }
+      
+
+        public async Task<IList<TagItem>> GetTagesAsyns(CancellationToken CancellationToken = default)
+        {
+            IQueryable<Tag> Tages = _context.Set<Tag>();
+
+            return await Tages
+                .OrderBy(x => x.Name)
+                .Select(x => new TagItem()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlSlug = x.UrlSlug,
+                    Description = x.Description,
+                    PostCount = x.Posts.Count(p => p.Published)
+
+                })
+                .ToListAsync(CancellationToken);
+        }
     }
 }
 

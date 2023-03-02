@@ -69,18 +69,35 @@ using TatBlog.WinApp;
 
 //}
 // text
+//var context = new BlogDbContext();
+//IBlogRepository blogRepo = new BlogRepository(context);
+//var pagingParams = new PagingParams
+//{
+//    PageNumber = 1,
+//    PageSize = 5,
+//    SortColumn = "Name",
+//    SortOrder = "DESC"
+//};
+//var tagList = await blogRepo.GetPagedTagsAsync(pagingParams);
+//Console.WriteLine("{0,-5}{1,-50}{2,10}", "ID", "Name", "Count");
+//foreach (var item in tagList)
+//{
+//    Console.WriteLine("{0,-5}{1,-50}{2,10}", item.Id, item.Name, item.PostCount);
+
+//}
+
+//Tìm thẻ tag bằng slug
+//var context = new BlogDbContext();
+//IBlogRepository blogRepo = new BlogRepository(context);
+//var tags = await blogRepo.GetTagAsync("Deep Learning");
+//Console.WriteLine("{0,-5}{1,-50}", tags.Id, tags.Name,tags.Description);
+
+//Lấy danh sách tất cả các thẻ (Tag) kèm theo số bài viết chứa thẻ đó
 var context = new BlogDbContext();
 IBlogRepository blogRepo = new BlogRepository(context);
-var pagingParams = new PagingParams
-{
-    PageNumber = 1,
-    PageSize = 5,
-    SortColumn = "Name",
-    SortOrder = "DESC"
-};
-var tagList = await blogRepo.GetPagedTagsAsync(pagingParams);
+var tags = await blogRepo.GetTagesAsyns();
 Console.WriteLine("{0,-5}{1,-50}{2,10}", "ID", "Name", "Count");
-foreach (var item in tagList)
+foreach (var item in tags)
 {
     Console.WriteLine("{0,-5}{1,-50}{2,10}", item.Id, item.Name, item.PostCount);
 

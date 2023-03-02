@@ -105,8 +105,10 @@ namespace TatBlog.Data.Seeders
         }
         private IList<Tag> AddTags()
         {
+            // http://myblog.vn/blog/post/2023/3/3/bai-hoc-hom-nya-chan-ngat
+
             var tags = new List<Tag>()
-            {new() { Name = "Google", Description = "Google applications", UrlSlug = "Google applications" },
+            {new() { Name = "Google", Description = "Google applications", UrlSlug = "google-applications" },
             new() { Name = "ASP.NET MVC", Description = "ASP.NET MVC", UrlSlug = "ASP.NET MVC" },
             new() { Name = "Razor Page", Description = "Razor Page", UrlSlug = "Razor Page" },
             new() { Name = "Blazor", Description = "Blazor", UrlSlug = "Blazor" },
