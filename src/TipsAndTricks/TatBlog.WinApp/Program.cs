@@ -1,8 +1,12 @@
-﻿using TatBlog.Core.Entities;
+﻿using Azure;
+using TatBlog.Core.Entities;
 using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
+using System.Collections.Immutable;
 using TatBlog.WinApp;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.Data.SqlClient;
 
 //var context = new BlogDbContext();
 //var seeder = new DataSeeder(context);
@@ -93,12 +97,97 @@ using TatBlog.WinApp;
 //Console.WriteLine("{0,-5}{1,-50}", tags.Id, tags.Name,tags.Description);
 
 //Lấy danh sách tất cả các thẻ (Tag) kèm theo số bài viết chứa thẻ đó
+//var context = new BlogDbContext();
+//IBlogRepository blogRepo = new BlogRepository(context);
+//var tags = await blogRepo.GetTagesAsyns();
+//Console.WriteLine("{0,-5}{1,-50}{2,10}", "ID", "Name", "Count");
+//foreach (var item in tags)
+//{
+//    Console.WriteLine("{0,-5}{1,-50}{2,10}", item.Id, item.Name, item.PostCount);
+
+//Tìm một bài viết theo mã sốA'
 var context = new BlogDbContext();
 IBlogRepository blogRepo = new BlogRepository(context);
-var tags = await blogRepo.GetTagesAsyns();
-Console.WriteLine("{0,-5}{1,-50}{2,10}", "ID", "Name", "Count");
-foreach (var item in tags)
-{
-    Console.WriteLine("{0,-5}{1,-50}{2,10}", item.Id, item.Name, item.PostCount);
+//var post = await blogRepo.FindPostByIdAsync(9);
+//Console.WriteLine("{0, -10}{1, -50}{2, -50}",
+//    post.Id, post.Title, post.ShortDescription);
 
+//var query = new TatBlog.Core.DTO.PostQuery()
+//{
+//    AuthorId = 2,
+//    CategoryId = 2,
+//    SlugCategory = "Messaging",
+//    TimeCreated = DateTime.Parse("2022-11-08"),
+//    Tag = "Razor Page"
+//};
+
+//var posts = await blogRepo.FindPostByPostQueryAsync(query);
+//int count = 1;
+
+//foreach (var post in posts)
+//{
+//    Console.WriteLine(count++);
+//    Console.WriteLine("---------------------------------------------------\n");
+//    Console.WriteLine("Author ID: " + post.AuthorId);
+//    Console.WriteLine("Category ID: " + post.CategoryId);
+//    Console.WriteLine("Category Slug: " + post.Category.UrlSlug);
+//    Console.WriteLine("Month: " + post.PostedDate.Month);
+//    Console.WriteLine("Year: " + post.PostedDate.Year);
+//}
+
+
+//var paringParams = new PagingParams()
+//{
+//    PageNumber = 1,
+//    PageSize = 5,
+//    SortColumn = "ViewCount",
+//    SortOrder = "DESC"
+//};
+//var query = new TatBlog.Core.DTO.PostQuery()
+//{
+//    AuthorId = 2,
+//    CategoryId = 2,
+
+//    SlugCategory = "Messaging",
+//    TimeCreated = DateTime.Parse("2022-11-08"),
+//    Tag = "Razor Page",
+//};
+
+//var posts = await blogRepo.GetPageFindPostByPostQueryAsync(paringParams, query);
+//foreach (var post in posts)
+//{
+//    Console.WriteLine(post);
+//}
+
+var paringParams = new PagingParams()
+{
+    PageNumber = 1,
+PageSize = 10,
+SortColumn = "ViewCount",
+    SortOrder = "DESC"
+};
+var condition = new TatBlog.Core.DTO.PostQuery()
+{
+    AuthorId = 2,
+    CategoryId = 2,
+    SlugCategory = "Messaging",
+    Year = 2022,
+    Month = 2,
+    PostedDate = DateTime.Parse("2022-11-08"),
+    Tag = "Razor Page",
+};
+
+var posts = await blogRepo.GetPagePostsAsync(condition, 1, 10);
+foreach (var post in posts)
+{
+    Console.WriteLine(post);
 }
+
+// var newPost = new Category()
+//{
+//    Name = "Florua",
+//    Description = "information florua",
+//    UrlSlug = "Florua",
+//};
+//var Change = await blogRepo.AddOrEditCategoryAsync(newPost);
+//Console.WriteLine(Change ? "Update success" : "Failed, try again");

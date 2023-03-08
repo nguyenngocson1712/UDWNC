@@ -17,6 +17,12 @@ namespace TatBlog.Services.Blogs
         int month,
         string slug,
         CancellationToken cancellationToken = default);
+       // Task<IPagedList< Post>> GetPagedPostAsync(
+       //     PostQuery condition,
+       //int pageNumber=1,
+       //int pageSize=10,
+       
+       //CancellationToken cancellationToken = default);
         Task<IList<Post>> GetPoPularArticlesAsysc(
             int numPost,
             CancellationToken cancellationToken = default);
@@ -38,6 +44,20 @@ namespace TatBlog.Services.Blogs
         Task<Tag> GetTagAsync(
             string slug,
         CancellationToken cancellationToken = default);
+        Task<Category> GetCategoriesAsync(
+          string slug,
+      CancellationToken cancellationToken = default);
+        Task<bool> DeleteTagByIdAsync(int id,CancellationToken cancellationToken=default);
+        Task<bool> IsSlugCategoryAsync(string slug, CancellationToken cancellationToken=default);
+        Task<Post> FindPostByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Object> CountByMostMonthAsync(int month,CancellationToken cancellationToken=default);
+        Task<Category> FindCategoriesByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task <IList<Post>> FindPostByPostQueryAsync(PostQuery query, CancellationToken cancellationToken=default);
+        //Task<IPagedList<Post>> GetPageFindPostByPostQueryAsync( IPagingParams pagingParams,PostQuery query, CancellationToken cancellationToken = default);
+        Task ChangeSTTPost(int id, CancellationToken cancellationToken = default);
+        Task <bool> AddorUpPostAsync( Post post, CancellationToken cancellationToken = default);
+        Task<bool> AddOrEditCategoryAsync(Category newCategory, CancellationToken cancellationToken = default);
+        Task<IPagedList<Post>> GetPagePostsAsync(PostQuery condition,int pageNumber,int pageSize,CancellationToken cancellationToken=default);
         
     }
 }

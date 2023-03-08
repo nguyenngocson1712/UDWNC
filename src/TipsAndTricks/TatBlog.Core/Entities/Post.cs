@@ -31,7 +31,7 @@ namespace TatBlog.Core.Entities
 
         public DateTime? ModifiedDate { get; set; }
 
-        public int CatogoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public int AuthorId { get; set; }
 
