@@ -15,10 +15,10 @@ namespace TatBlog.WebApp.Extensions
         }
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
-            //    builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(
-            //        builder.Configuration.GetConnectionString("DefaultConnection")));
-            //    builder.Services.AddScoped<IBlogRepository, BlogRepository>();
-            //    builder.Services.AddScoped<IDataSeeder, IDataSeeder>();
+            builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+            builder.Services.AddScoped<IDataSeeder, DataSeeder>();
             return builder;
         }
         public static WebApplication UseRequestPipeline(this WebApplication app)
