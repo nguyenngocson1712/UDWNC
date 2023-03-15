@@ -8,6 +8,7 @@ using TatBlog.WinApp;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.Data.SqlClient;
 
+Console.WriteLine("hello");
 //var context = new BlogDbContext();
 //var seeder = new DataSeeder(context);
 //seeder.Initialize();
@@ -106,8 +107,8 @@ using Microsoft.Data.SqlClient;
 //    Console.WriteLine("{0,-5}{1,-50}{2,10}", item.Id, item.Name, item.PostCount);
 
 //Tìm một bài viết theo mã sốA'
-var context = new BlogDbContext();
-IBlogRepository blogRepo = new BlogRepository(context);
+//var context = new BlogDbContext();
+//IBlogRepository blogRepo = new BlogRepository(context);
 //var post = await blogRepo.FindPostByIdAsync(9);
 //Console.WriteLine("{0, -10}{1, -50}{2, -50}",
 //    post.Id, post.Title, post.ShortDescription);
@@ -159,29 +160,29 @@ IBlogRepository blogRepo = new BlogRepository(context);
 //    Console.WriteLine(post);
 //}
 
-var paringParams = new PagingParams()
-{
-    PageNumber = 1,
-PageSize = 10,
-SortColumn = "ViewCount",
-    SortOrder = "DESC"
-};
-var condition = new TatBlog.Core.DTO.PostQuery()
-{
-    AuthorId = 2,
-    CategoryId = 2,
-    SlugCategory = "Messaging",
-    Year = 2022,
-    Month = 2,
-    PostedDate = DateTime.Parse("2022-11-08"),
-    Tag = "Razor Page",
-};
+//var paringParams = new PagingParams()
+//{
+//    PageNumber = 1,
+//PageSize = 10,
+//SortColumn = "ViewCount",
+//    SortOrder = "DESC"
+//};
+//var condition = new TatBlog.Core.DTO.PostQuery()
+//{
+//    AuthorId = 2,
+//    CategoryId = 2,
+//    SlugCategory = "Messaging",
+//    Year = 2022,
+//    Month = 2,
+//    PostedDate = DateTime.Parse("2022-11-08"),
+//    Tag = "Razor Page",
+//};
 
-var posts = await blogRepo.GetPagePostsAsync(condition, 1, 10);
-foreach (var post in posts)
-{
-    Console.WriteLine(post);
-}
+//var posts = await blogRepo.GetPagePostsAsync(condition, 1, 10);
+//foreach (var post in posts)
+//{
+//    Console.WriteLine(post);
+//}
 
 // var newPost = new Category()
 //{

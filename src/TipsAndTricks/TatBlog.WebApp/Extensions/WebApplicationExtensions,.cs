@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NLog.Web;
+using TagBlog.Services.Media;
 using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
+using TatBlog.WebApp.Middlewares;
 
 namespace TatBlog.WebApp.Extensions
 {
@@ -19,6 +22,7 @@ namespace TatBlog.WebApp.Extensions
                 builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IBlogRepository, BlogRepository>();
             builder.Services.AddScoped<IDataSeeder, DataSeeder>();
+            builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             return builder;
         }
         public static WebApplication UseRequestPipeline(this WebApplication app)
@@ -35,6 +39,7 @@ namespace TatBlog.WebApp.Extensions
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseMiddleware<UserActivityMiddleware>();
 
             return app;
         }
@@ -54,6 +59,12 @@ namespace TatBlog.WebApp.Extensions
                     .LogError(ex, "Could not insert data into database");
             }
             return app;
+        }
+        public static WebApplicationBuilder ConfigureNLog(this WebApplicationBuilder builder)
+        {
+            builder.Logging.ClearProviders();
+            builder.Host.UseNLog();
+            return builder;
         }
     }
     

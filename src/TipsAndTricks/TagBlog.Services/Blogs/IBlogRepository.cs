@@ -32,9 +32,9 @@ namespace TatBlog.Services.Blogs
         Task IncreaseViewCountAsyns(
             int postId,
             CancellationToken cancellationToken = default);
-        Task<IList<CategoryItem>> GetCategoriesAsyns(
-            bool showOnMenu = false,
-            CancellationToken CancellationToken = default);
+        //Task<IList<CategoryItem>> GetCategoriesAsyns(
+        //    bool showOnMenu = false,
+        //    CancellationToken CancellationToken = default);
         Task<IList<TagItem>> GetTagesAsyns(
            
            CancellationToken CancellationToken = default);
@@ -44,7 +44,7 @@ namespace TatBlog.Services.Blogs
         Task<Tag> GetTagAsync(
             string slug,
         CancellationToken cancellationToken = default);
-        Task<Category> GetCategoriesAsync(
+        Task<Category> GetCategoriesBySlugAsync(
           string slug,
       CancellationToken cancellationToken = default);
         Task<bool> DeleteTagByIdAsync(int id,CancellationToken cancellationToken=default);
@@ -58,6 +58,24 @@ namespace TatBlog.Services.Blogs
         Task <bool> AddorUpPostAsync( Post post, CancellationToken cancellationToken = default);
         Task<bool> AddOrEditCategoryAsync(Category newCategory, CancellationToken cancellationToken = default);
         Task<IPagedList<Post>> GetPagePostsAsync(PostQuery condition,int pageNumber,int pageSize,CancellationToken cancellationToken=default);
-        
+        Task<Author> GetAuthorAsync(string slug, CancellationToken cancellationToken = default);
+        Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default);
+
+        Task<IList<CategoryItem>> GetCategoriesAsync(
+        bool showOnMenu = false,
+        CancellationToken cancellationToken = default);
+        Task<IPagedList<T>> GetPagedPostsAsync<T>(
+        PostQuery condition,
+        IPagingParams pagingParams,
+        Func<IQueryable<Post>, IQueryable<T>> mapper);
+
+        Task<Post> GetPostByIdAsync(
+        int postId, bool includeDetails = false,
+        CancellationToken cancellationToken = default);
+
+        Task<Post> CreateOrUpdatePostAsync(
+        Post post, IEnumerable<string> tags,
+        CancellationToken cancellationToken = default);
+
     }
 }

@@ -4,6 +4,8 @@ using TatBlog.Services.Blogs;
 using Microsoft.EntityFrameworkCore;
 using TatBlog.WebApp.Extension;
 using TatBlog.WebApp.Extensions;
+using TatBlog.WebApp.Mapsters;
+using TatBlog.WebApp.Validations;
 //using TatBlog.Services.Blogs;
 
 //var builder = WebApplication.CreateBuilder(args);
@@ -62,7 +64,10 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder
         .ConfigureMvc()
-        .ConfigureServices();
+        .ConfigureServices()
+        .ConfigureFluentValidation()
+        .ConfigureNLog()
+        .ConfigureMapster();
 
 }
 var app = builder.Build();
