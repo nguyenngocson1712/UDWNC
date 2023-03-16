@@ -59,6 +59,7 @@ using TatBlog.WebApp.Validations;
 //    seeder.Initialize();
 //}
 //
+//Test
 
 var builder = WebApplication.CreateBuilder(args);
 {
