@@ -13,7 +13,7 @@ namespace TatBlog.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Post> builder)
         {
-            builder.ToTable("Potst");
+            builder.ToTable("Posts");
             builder.HasKey(p => p.Id);
             builder.Property(t => t.Title)
                 .IsRequired()
@@ -45,7 +45,7 @@ namespace TatBlog.Data.Mappings
                 .HasColumnType("datetime");
             builder.HasOne(p => p.Category)
                 .WithMany(c => c.Posts)
-                .HasForeignKey(p => p.CatogoryId)
+                .HasForeignKey(p => p.CategoryId)
                 .HasConstraintName("FK_Posts_Categories")
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(p => p.Author)

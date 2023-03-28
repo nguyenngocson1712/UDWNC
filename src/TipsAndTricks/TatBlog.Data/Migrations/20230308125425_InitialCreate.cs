@@ -61,7 +61,7 @@ namespace TatBlog.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Potst",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -76,12 +76,12 @@ namespace TatBlog.Data.Migrations
                     Published = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     PostedDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    CatogoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Potst", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Posts_Authors",
                         column: x => x.AuthorId,
@@ -90,7 +90,7 @@ namespace TatBlog.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_Categories",
-                        column: x => x.CatogoryId,
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -107,9 +107,9 @@ namespace TatBlog.Data.Migrations
                 {
                     table.PrimaryKey("PK_PostTags", x => new { x.PostsId, x.TagsId });
                     table.ForeignKey(
-                        name: "FK_PostTags_Potst_PostsId",
+                        name: "FK_PostTags_Posts_PostsId",
                         column: x => x.PostsId,
-                        principalTable: "Potst",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -121,19 +121,19 @@ namespace TatBlog.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTags_TagsId",
-                table: "PostTags",
-                column: "TagsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Potst_AuthorId",
-                table: "Potst",
+                name: "IX_Posts_AuthorId",
+                table: "Posts",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Potst_CatogoryId",
-                table: "Potst",
-                column: "CatogoryId");
+                name: "IX_Posts_CategoryId",
+                table: "Posts",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostTags_TagsId",
+                table: "PostTags",
+                column: "TagsId");
         }
 
         /// <inheritdoc />
@@ -143,7 +143,7 @@ namespace TatBlog.Data.Migrations
                 name: "PostTags");
 
             migrationBuilder.DropTable(
-                name: "Potst");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Tags");

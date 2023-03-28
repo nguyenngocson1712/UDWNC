@@ -10,9 +10,9 @@ using System.Linq.Dynamic.Core;
 
 using System.Runtime.CompilerServices;
 
-namespace TatBlog.Services.Extensions
-{
-    public static class PagedListExtensions
+namespace TatBlog.Services.Extensions;
+
+public static class PagedListExtensions
     {
         public static string GetOrderExpression(
             this IPagingParams pagingParams, string defaultColumn = "Id")
@@ -54,7 +54,7 @@ namespace TatBlog.Services.Extensions
         {
             var totalCount = await source.CountAsync(cancellationToken);
             var items = await source
-               .OrderBy($"{sortColumn}{sortOrder}")
+               .OrderBy($"{sortColumn} {sortOrder}")
                .Skip((pageNumber - 1) * pageSize)
                .Take(pageSize)
                .ToListAsync(cancellationToken);
@@ -64,5 +64,5 @@ namespace TatBlog.Services.Extensions
                 pageSize,
                 totalCount);
         }
-    }
+    
 }
