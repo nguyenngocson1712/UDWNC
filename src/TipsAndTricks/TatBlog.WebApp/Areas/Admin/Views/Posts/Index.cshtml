@@ -1,4 +1,6 @@
 ﻿@model TatBlog.WebApp.Areas.Admin.Models.PostFilterModel
+
+
 @{
     ViewData["PageTitLe"] = "Danh sách bài viết";
     var postsList = ViewBag.PostsList as IPagedList<Post>;
@@ -15,8 +17,7 @@
         <thead>
             <tr>
                 <th> Tiêu đề</th>
-                <th> T
-                    ác giả</th>
+                <th> Tác giả</th>
                 <th> Chủ đề</th>
                 <th> Xuất bản</th>
             </tr>
@@ -44,7 +45,8 @@
                         @post.Category.Name
                     </td>
                              <td>
-                        @(post.Published? " có": "không")
+                        <button class="btn btn-primary">       
+                        @(post.Published? " có": "không")</button>
                         </td>
                 </tr>
             }
@@ -57,4 +59,6 @@ else
             Không tìm thấy bài viết
         </h1>
     }
+
+     <partial name="_AdminPager" model="@postsList"></partial>
     

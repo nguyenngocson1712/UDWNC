@@ -10,7 +10,7 @@ namespace TagBlog.Services.Media
     public class LocalFileSystemMediaManager:IMediaManager
    
     {
-        private const string PicturesFolder = "uploads/pictures{0}{1}";
+        private const string PicturesFolder = "uploads/pictures/{0}{1}";
         private readonly ILogger<LocalFileSystemMediaManager> _logger;
 
         public LocalFileSystemMediaManager(ILogger<LocalFileSystemMediaManager> logger)
@@ -42,7 +42,7 @@ namespace TagBlog.Services.Media
             {
                 try
                 {
-                    if (!buffer.CanRead || buffer.CanSeek || buffer.Length == 0)
+                    if (!buffer.CanRead || !buffer.CanSeek || buffer.Length == 0)
                         return null;
                     var fileExt=Path.GetExtension(originalFileName).ToLower();
                     var  returnedFilePath=CreateFilePath(fileExt,contentType.ToLower());

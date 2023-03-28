@@ -33,8 +33,8 @@ namespace TatBlog.WebApp.Extension
 
             endpoints.MapControllerRoute(
                name: "posts-by-category",
-               pattern: "blog/post/{year:int}/{month:int}/{day:int}/{slug}",
-               defaults: new { controller = "Blog", action = "Post" });
+               pattern: "blog/postinfo/{year:int}/{month:int}/{slug}",
+               defaults: new { controller = "Blog", action = "PostInfo" });
 
 
 

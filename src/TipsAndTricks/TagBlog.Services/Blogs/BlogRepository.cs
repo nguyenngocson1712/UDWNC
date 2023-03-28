@@ -422,6 +422,67 @@ namespace TatBlog.Services.Blogs
             return post;
         }
 
+        public async Task<IList<Post>> GetRandomArticlesAsync(
+        int numPosts, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                .OrderBy(x => Guid.NewGuid())
+                .Take(numPosts)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IPagedList<Post>> GetPagedPostsAsync(
+            PostQuery condition,
+            int pageNumber = 1,
+            int pageSize = 10,
+            CancellationToken cancellationToken = default)
+        {
+            return await FilterPosts(condition).ToPagedListAsync(
+                pageNumber, pageSize,
+                nameof(Post.PostedDate), "DESC",
+                cancellationToken);
+        }
+
+        public async Task<IList<TagItem>> GetListTagItemAsync(TagQuery condition, CancellationToken cancellationToken = default)
+        {
+            var tagItems = _context.Set<Tag>().Select(x => new TagItem()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                UrlSlug = x.UrlSlug,
+                PostCount = x.Posts.Count(p => p.Published)
+            });
+
+            if (condition != null)
+            {
+                if (!string.IsNullOrWhiteSpace(condition.KeyWord))
+                {
+                    tagItems = tagItems.Where(x => x.Name.Contains(condition.KeyWord) ||
+                                              x.Description.Contains(condition.KeyWord));
+                }
+            }
+
+            return await tagItems.ToListAsync(cancellationToken);
+        }
+
+        public async Task<Tag> FindTagById(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Tag>().FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<bool> AddOrEditTagAsync(Tag tag, CancellationToken cancellationToken = default)
+        {
+            _context.Entry(tag).State = tag.Id == 0 ? EntityState.Added : EntityState.Modified;
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<bool> IsTagSlugExistedAsync(int id, string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Tag>().AnyAsync(x => x.Id != id && x.UrlSlug == slug, cancellationToken);
+        }
+
+
+
 
 
 

@@ -22,8 +22,11 @@ namespace TatBlog.Core.DTO
         public DateTime TimeCreated { get; set; }
 
         public DateTime PostedDate{ get; set; }
+         public int PostedYear { get; set; }
 
+        public int PostedMonth { get; set; }
 
+        public int ViewCount { get; set; }
         public string Tag { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }

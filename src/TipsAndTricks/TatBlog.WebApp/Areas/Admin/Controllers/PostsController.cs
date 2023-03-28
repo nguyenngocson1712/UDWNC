@@ -9,6 +9,7 @@ using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
 using TatBlog.Services.Blogs;
 using TatBlog.WebApp.Areas.Admin.Models;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
@@ -26,7 +27,9 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             _logger = logger;
         }
 
-        public async Task< IActionResult> Index(PostFilterModel model)
+        public async Task< IActionResult> Index(PostFilterModel model,
+            [FromQuery(Name = "p")] int pageNumber = 1,
+                [FromQuery(Name = "ps")] int pageSize = 10)
         {
             _logger.LogInformation("Tạo điều kiện truy vấn");
             var postQuery = _mapper.Map<PostQuery>(model);
@@ -41,11 +44,16 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
 
 
             //};
+
             ViewBag.PostsList = await _blogRepository
-                .GetPagePostsAsync(postQuery, 1, 10);
+                .GetPagePostsAsync(postQuery, pageNumber, pageSize);
             _logger.LogInformation("chuẩn bị dữ liệu cho ViewModel");
             await PopulatePostFilterModelAsync(model);
             return View(model);
+
+
+
+
         }
         private async Task PopulatePostFilterModelAsync(PostFilterModel model)
         {
@@ -94,7 +102,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit (IValidator< PostEditModel>  postValidator,PostEditModel model)
+        public async Task<IActionResult> Edit ([FromServices] IValidator< PostEditModel>  postValidator,PostEditModel model)
         {
             var validationResult = await postValidator.ValidateAsync(model);
                if(!validationResult.IsValid)
