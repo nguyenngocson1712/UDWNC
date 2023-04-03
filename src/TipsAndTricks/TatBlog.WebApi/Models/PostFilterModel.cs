@@ -1,7 +1,8 @@
 ﻿namespace TatBlog.WebApi.Models
 {
-    public class AuhorFilterModel:PagingModel
+    public class PostFilterModel :PagingModel
     {
+    
         public string Name { get; set; }
     }
 }

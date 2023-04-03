@@ -1,4 +1,7 @@
 ﻿using Mapster;
+using TatBlog.Core.DTO;
+using TatBlog.Core.Entities;
+using TatBlog.WebApi.Models;
 
 namespace TatBlog.WebApi.Mapsters
 {
@@ -6,7 +9,15 @@ namespace TatBlog.WebApi.Mapsters
     {
         public void Register(TypeAdapterConfig config)
         {
-            throw new NotImplementedException();
+            config.NewConfig<Author,AuthorDto>();
+            config.NewConfig<Author, AuthorItem>().Map(dest => dest.PostCount,
+                src => src.Posts==null? 0 : src.Posts.Count);
+            config.NewConfig<AuthorEditModel, Author>();
+            config.NewConfig<Category, CategoryDto>();
+            config.NewConfig<Category, CategoryItem>().Map(dest => dest.PostCount,
+                src => src.Posts == null ? 0 : src.Posts.Count);
+            config.NewConfig<Post, PostDto>();
+            config.NewConfig<Post, PostDetails>();
         }
     }
 }

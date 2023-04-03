@@ -1,11 +1,14 @@
-﻿using FluentValidation.Results;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using FluentValidation.Results;
 
 namespace TatBlog.WebApi.Models
 {
     public class ApiResponse
     {
-        //public bool IsSuccess => Errors.Success ==0;
+        public bool IsSuccess => Errors.Count ==0;
         public HttpStatusCode StatusCode { get; init; }
         public IList<string> Errors { get; init; }
         protected ApiResponse() 

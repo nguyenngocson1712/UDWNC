@@ -75,25 +75,48 @@ public class AuthorRepository : IAuthorRepository
             .ToListAsync(cancellationToken);
     }
 
+    //public async Task<IPagedList<AuthorItem>> GetPagedAuthorsAsync(
+    //    IPagingParams pagingParams,
+    //    string name = null,
+    //    CancellationToken cancellationToken = default)
+    //{
+    //    return await _context.Set<Author>()
+    //        .AsNoTracking()
+    //        //.Whereif(!string.IsNullOrWhiteSpace(name),
+    //        //    x => x.FullName.Contains(name))
+    //        .Select(a => new AuthorItem()
+    //        {
+    //            Id = a.Id,
+    //            FullName = a.FullName,
+    //            Email = a.Email,
+    //            JoinedDay = a.JoinedDay,
+    //            ImageUrl = a.ImageUrl,
+    //            UrlSlug = a.UrlSlug,
+    //            PostCount = a.Posts.Count(p => p.Published)
+    //        })
+    //        .ToPagedListAsync(pagingParams, cancellationToken);
+    //}
+
     public async Task<IPagedList<AuthorItem>> GetPagedAuthorsAsync(
         IPagingParams pagingParams,
         string name = null,
         CancellationToken cancellationToken = default)
     {
-        return await _context.Set<Author>()
-            .AsNoTracking()
-            //.Whereif(!string.IsNullOrWhiteSpace(name),
-            //    x => x.FullName.Contains(name))
-            .Select(a => new AuthorItem()
-            {
-                Id = a.Id,
-                FullName = a.FullName,
-                Email = a.Email,
-                JoinedDay = a.JoinedDay,
-                ImageUrl = a.ImageUrl,
-                UrlSlug = a.UrlSlug,
-                PostCount = a.Posts.Count(p => p.Published)
-            })
+        IQueryable<Author> authorQuery = _context.Set<Author>().AsNoTracking();
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            authorQuery = authorQuery.Where(x => x.FullName.Contains(name));
+        }
+        return await authorQuery.Select(a => new AuthorItem()
+        {
+            Id = a.Id,
+            FullName = a.FullName,
+            Email = a.Email,
+            JoinedDay = a.JoinedDay,
+            ImageUrl = a.ImageUrl,
+            UrlSlug = a.UrlSlug,
+            PostCount = a.Posts.Count(p => p.Published)
+        })
             .ToPagedListAsync(pagingParams, cancellationToken);
     }
 
