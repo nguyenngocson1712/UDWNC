@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog.Web;
+using TagBlog.Services.Blogs;
 using TagBlog.Services.Media;
 using TatBlog.Data.Contexts;
 using TatBlog.Services.Blogs;
@@ -17,7 +18,8 @@ namespace TatBlog.WebApi.Extensions
             builder.Services.AddScoped<ITimeProvider,LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             builder.Services.AddScoped <IBlogRepository, BlogRepository>();
-            builder.Services.AddScoped <IAuthorRepository, IAuthorRepository>();
+            builder.Services.AddScoped <IAuthorRepository, AuthorRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             return builder;
         }
         public static WebApplicationBuilder ConfigureCors(this WebApplicationBuilder builder)
