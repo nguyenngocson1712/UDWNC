@@ -1,5 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog.Web;
+<<<<<<< Updated upstream
+=======
+using PostsBlog.Services.Blogs;
+using TagBlog.Services.Blogs;
+>>>>>>> Stashed changes
 using TagBlog.Services.Media;
 using TatBlog.Data.Contexts;
 using TatBlog.Services.Blogs;
@@ -17,7 +22,13 @@ namespace TatBlog.WebApi.Extensions
             builder.Services.AddScoped<ITimeProvider,LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             builder.Services.AddScoped <IBlogRepository, BlogRepository>();
+<<<<<<< Updated upstream
             builder.Services.AddScoped <IAuthorRepository, IAuthorRepository>();
+=======
+            builder.Services.AddScoped <IAuthorRepository, AuthorRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
+>>>>>>> Stashed changes
             return builder;
         }
         public static WebApplicationBuilder ConfigureCors(this WebApplicationBuilder builder)

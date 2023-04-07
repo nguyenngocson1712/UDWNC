@@ -81,5 +81,12 @@ namespace TatBlog.Services.Blogs
         Task<bool> IsTagSlugExistedAsync(int id, string slug, CancellationToken cancellationToken = default);
         Task<Tag> FindTagById(int id, CancellationToken cancellationToken = default);
         Task<bool> AddOrEditTagAsync(Tag tag, CancellationToken cancellationToken = default);
+        Task<IPagedList<T>> GetPagedPostsByQueryAsync<T>(Func<IQueryable<Post>, IQueryable<T>> mapper, PostQuery query, IPagingParams pagingParams, CancellationToken cancellationToken = default);
+        Task<IList<MonthlyPostCountItem>> CountMonthlyPostsAsync(
+            int numMonths, CancellationToken cancellationToken = default);
+        Task<IList<Post>> GetPopularArticleAsync(int numPosts, CancellationToken cancellationToken = default);
+        Task<Post> GetPostBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default);
+        Task<bool> SetImageUrlPostAsync(int postId, string imageUrl, CancellationToken cancellationToken = default);
+        Task<bool> DeletePostByIdAsync(int id, CancellationToken cancellationToken = default);
     }
 }

@@ -481,6 +481,70 @@ namespace TatBlog.Services.Blogs
             return await _context.Set<Tag>().AnyAsync(x => x.Id != id && x.UrlSlug == slug, cancellationToken);
         }
 
+        public async Task<IPagedList<T>> GetPagedPostsByQueryAsync<T>(Func<IQueryable<Post>, IQueryable<T>> mapper, PostQuery query, IPagingParams pagingParams, CancellationToken cancellationToken = default)
+        {
+            return await mapper(FilterPosts(query).AsNoTracking()).ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        public async Task<IList<MonthlyPostCountItem>> CountMonthlyPostsAsync(
+            int numMonths, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                .GroupBy(x => new { x.PostedDate.Year, x.PostedDate.Month })
+                .Select(g => new MonthlyPostCountItem()
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    PostCount = g.Count(x => x.Published)
+                })
+                .Take(numMonths)
+                .OrderByDescending(x => x.Year)
+                .ThenByDescending(x => x.Month)
+                .ToListAsync(cancellationToken);
+        }
+
+        public  Task<Post> GetPostBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default)
+        {
+            if (!includeDetails)
+            {
+                return _context.Set<Post>()
+                  .Where(p => p.UrlSlug == slug)
+                  .FirstOrDefaultAsync(cancellationToken);
+            }
+            return _context.Set<Post>()
+              .Include(p => p.Author)
+              .Include(p => p.Tags)
+              .Include(p => p.Category)
+              .Where(p => p.UrlSlug == slug)
+              .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<bool> SetImageUrlPostAsync(int postId, string imageUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+              .Where(p => p.Id == postId)
+              .ExecuteUpdateAsync(p =>
+                p.SetProperty(p => p.ImageUrl, p => imageUrl)
+                 .SetProperty(p => p.ModifiedDate, p => DateTime.Now),
+                cancellationToken) > 0; throw new NotImplementedException();
+        }
+
+        public  async Task<IList<Post>> GetPopularArticleAsync(int numPosts, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                 .Include(x => x.Author)
+                 .Include(x => x.Category)
+                 .OrderByDescending(p => p.ViewCount)
+                 .Take(numPosts)
+                 .ToListAsync(cancellationToken);
+        }
+
+        public async  Task<bool> DeletePostByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                .Where(t => t.Id == id).ExecuteDeleteAsync(cancellationToken) > 0;
+        }
+
 
 
 

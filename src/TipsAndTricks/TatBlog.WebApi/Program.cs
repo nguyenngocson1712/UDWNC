@@ -13,6 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 app.SetupReQuestPipeline();
+<<<<<<< Updated upstream
+=======
+app.MapAuthorEndpoints();
+app.MapCategoryEndpoints();
+app.MapPostEndpoints();
+>>>>>>> Stashed changes
 app.Run();
 
 

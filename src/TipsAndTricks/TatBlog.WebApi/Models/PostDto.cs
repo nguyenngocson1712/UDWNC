@@ -24,7 +24,7 @@ namespace TatBlog.WebApi.Models
 
         public DateTime? ModifiedDate { get; set; }
 
-        
+        public bool Published { get; set; }
 
         public CategoryDto Category { get; set; }
 
